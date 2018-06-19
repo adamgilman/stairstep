@@ -5,7 +5,15 @@ __pycache__/
 
 # C extensions
 *.so
-
+bin/*
+include/*
+lib/*
+man/*
+stairstep.code-workspace
+pip-selfcheck.json
+.vscode/*
+stairstep/.vscode/*
+.vscode/settings.json
 # Distribution / packaging
 .Python
 build/
