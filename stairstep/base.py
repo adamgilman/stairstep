@@ -36,11 +36,17 @@ class StairStep(object):
         states = {}
         for k in self.states.keys():
             states[k] = self.states[k].export()
-        ret = {
-            "Comment" : self.comment,
-            "StartAt" : self.startAt,
-            "States" : states
-        }
+        if self.comment is not None:
+            ret = {
+                "Comment" : self.comment,
+                "StartAt" : self.startAt,
+                "States" : states
+            }
+        else:
+            ret = {
+                "StartAt" : self.startAt,
+                "States" : states
+            }
         return ret
 
     def json(self):
