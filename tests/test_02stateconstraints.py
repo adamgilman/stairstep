@@ -19,14 +19,12 @@ class TestStateBaseConstraints(unittest.TestCase):
                 "Type": "Task",
                 "Resource": "arn:aws:lambda:us-east-1:123456789012:function:HelloWorld",
                 "Next" : "nextResource",
-                "End": True
             }
         no_comment = State(
             name = "Hello World",
             stype = "Task",
             resource = "arn:aws:lambda:us-east-1:123456789012:function:HelloWorld",
             snext = "nextResource",
-            end = True
         )
         self.assertEqual( no_comment.export(), output )
 
@@ -35,7 +33,6 @@ class TestStateBaseConstraints(unittest.TestCase):
                 "Type": "Task",
                 "Resource": "arn:aws:lambda:us-east-1:123456789012:function:HelloWorld",
                 "Next" : "nextResource",
-                "End": True
             }
         has_comment = State(
             name = "Hello World",
@@ -43,7 +40,6 @@ class TestStateBaseConstraints(unittest.TestCase):
             stype = "Task",
             resource = "arn:aws:lambda:us-east-1:123456789012:function:HelloWorld",
             snext = "nextResource",
-            end = True
         )
         self.assertEqual( has_comment.export(), output )
 

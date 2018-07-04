@@ -7,6 +7,10 @@ class State(object):
             "stype"     : "Type",
             "resource"  : "Resource",
             "next"      : "Next",
+            "inputpath" : "InputPath",
+            "outputpath": "OutputPath",
+            "retry"     : "Retry",
+            "catch"     : "Catch",
             "end"       : "End"
         }
     def __init__(self,
@@ -26,6 +30,17 @@ class State(object):
 
 
     def export(self):
+        if (self.next is True):
+            raise AttributeError("True is an invalid value for Next")
+        
+        if (self.stype not in ['Choice', 'Success', 'Fail']):
+            if (self.next is not None) and (self.end is not None):
+                raise AttributeError("State must have either an End or Next field")
+
+        if (self.next is None) and (self.end is None):
+            raise AttributeError("State must have either an End or Next field")
+
+
         if self.stype not in ['Succeed', 'Fail']:
             if self.next is None:
                 raise AttributeError("All non-terminal states MUST have a “Next” field")

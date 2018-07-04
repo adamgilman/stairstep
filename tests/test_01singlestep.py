@@ -39,7 +39,8 @@ class TestStepFunctionWithSingleStep(unittest.TestCase):
                         "States": {
                             "Hello World": { 
                                 "Type": "Succeed",
-                                "Resource": "arn:aws:lambda:us-east-1:123456789012:function:HelloWorld"
+                                "Resource": "arn:aws:lambda:us-east-1:123456789012:function:HelloWorld",
+                                "Next" : "nextResource"
                             }
                         }
                     }'''
@@ -52,6 +53,7 @@ class TestStepFunctionWithSingleStep(unittest.TestCase):
             name = "Hello World",
             stype = "Succeed",
             resource = "arn:aws:lambda:us-east-1:123456789012:function:HelloWorld",
+            snext = "nextResource"
         )
 
         ss.addState(hello_step)
@@ -62,6 +64,7 @@ class TestStepFunctionWithoutSteps(unittest.TestCase):
         self.output = {
                 "Type": "Succeed",
                 "Resource": "arn:aws:lambda:us-east-1:123456789012:function:HelloWorld",
+                "Next" : "nextResource"
             }
 
     def test_no_states(self):
@@ -69,5 +72,6 @@ class TestStepFunctionWithoutSteps(unittest.TestCase):
             name = "Hello World",
             stype = "Succeed",
             resource = "arn:aws:lambda:us-east-1:123456789012:function:HelloWorld",
+            snext = "nextResource"
         )
         self.assertEqual( hello_step.export(), self.output )
