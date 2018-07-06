@@ -1,5 +1,5 @@
 import unittest, json
-from stairstep import StairStep, State
+from stairstep import StairStep, StateTask, StateSucceed
 
 class TestStepFunctionWithSingleStep(unittest.TestCase):
     def test_single_state(self):
@@ -23,9 +23,8 @@ class TestStepFunctionWithSingleStep(unittest.TestCase):
             comment = "A simple minimal example of the States language",
             startAt = "Hello World",
         )
-        hello_step = State(
+        hello_step = StateTask(
             name = "Hello World",
-            stype = "Task",
             resource = "arn:aws:lambda:us-east-1:123456789012:function:HelloWorld",
             snext = "nextResource"
         )
@@ -49,9 +48,8 @@ class TestStepFunctionWithSingleStep(unittest.TestCase):
         ss = StairStep(
             startAt = "Hello World",
         )
-        hello_step = State(
+        hello_step = StateSucceed(
             name = "Hello World",
-            stype = "Succeed",
             resource = "arn:aws:lambda:us-east-1:123456789012:function:HelloWorld",
             snext = "nextResource"
         )
@@ -68,9 +66,8 @@ class TestStepFunctionWithoutSteps(unittest.TestCase):
             }
 
     def test_no_states(self):
-        hello_step = State(
+        hello_step = StateSucceed(
             name = "Hello World",
-            stype = "Succeed",
             resource = "arn:aws:lambda:us-east-1:123456789012:function:HelloWorld",
             snext = "nextResource"
         )

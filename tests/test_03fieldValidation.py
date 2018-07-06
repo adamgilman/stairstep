@@ -1,5 +1,5 @@
 import unittest
-from stairstep import State
+from stairstep import StatePass, StateTask, StateChoice
 from .sharedFieldValidation import FieldValidationTests
 
 class TestStatePassState(unittest.TestCase, FieldValidationTests):
@@ -12,9 +12,8 @@ class TestStatePassState(unittest.TestCase, FieldValidationTests):
 
         #if True, next or catch MUST be True
         self.next_or_end = True
-        self.original_state = State(
+        self.original_state = StatePass(
             name = "Hello World",
-            stype = "Pass",
             snext = "nextResource",
         )
 
@@ -28,9 +27,8 @@ class TestStateTaskState(unittest.TestCase, FieldValidationTests):
 
         #if True, next or catch MUST be True
         self.next_or_end = True
-        self.original_state = State(
+        self.original_state = StateTask(
             name = "Hello World",
-            stype = "Task",
             snext = "nextResource",
         )
 
@@ -44,7 +42,6 @@ class TestStateChoiceState(unittest.TestCase, FieldValidationTests):
 
         #if True, next or catch MUST be True
         self.next_or_end = False
-        self.original_state = State(
+        self.original_state = StateChoice(
             name = "Hello World",
-            stype = "Choice",
         )

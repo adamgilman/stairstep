@@ -1,6 +1,6 @@
 import simplejson as json
 
-class State(object):
+class StateBase(object):
     prop_map = {
             'name'      : "Name",
             "comment"   : "Comment",
@@ -40,7 +40,6 @@ class State(object):
         if (self.next is None) and (self.end is None):
             raise AttributeError("State must have either an End or Next field")
 
-
         if self.stype not in ['Succeed', 'Fail']:
             if self.next is None:
                 raise AttributeError("All non-terminal states MUST have a “Next” field")
@@ -48,7 +47,7 @@ class State(object):
         if self.end is True:
             if self.stype in ['Choice', 'Succeed', 'Fail']:
                 raise AttributeError("Choice, Succeed, Fail states may NOT have 'End' field")
-        
+
         if self.stype is None:
             raise AttributeError("All states MUST have a “Type” field.")
 
@@ -62,6 +61,30 @@ class State(object):
                 ret[key_map] = self_vars[prop_key]
         return ret
                 
+class StatePass(StateBase):
+    pass
+
+class StateTask(StateBase):
+    def __init__(self, **kwargs):
+        kwargs['stype'] = "Task"
+        super().__init__(**kwargs)
+
+class StateSucceed(StateBase):
+    def __init__(self, **kwargs):
+        kwargs['stype'] = "Succeed"
+        super().__init__(**kwargs)
+
+class StateFail(StateBase):
+    def __init__(self, **kwargs):
+        kwargs['stype'] = "Fail"
+        super().__init__(**kwargs)
+
+
+class StateChoice(StateBase):
+    def __init__(self, **kwargs):
+        kwargs['stype'] = "Choice"
+        super().__init__(**kwargs)
+
 
 class StairStep(object):
     def __init__(self, 

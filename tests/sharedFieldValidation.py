@@ -1,4 +1,4 @@
-from stairstep import State
+import unittest
 
 class FieldValidationTests(object):
     def test_required_fields(self):
@@ -10,6 +10,7 @@ class FieldValidationTests(object):
             with self.assertRaises(AttributeError):
                 test_state.export()
 
+    @unittest.skip("wait to refactor out Task")
     def test_notallowed_fields(self):
         fields = self.state_fields['not_allowed']
         for f in fields:
