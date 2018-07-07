@@ -42,12 +42,6 @@ class StateBase(object):
         
     def export(self):
         self.validate()
-
-        if self.stype is None:
-            raise AttributeError("All states MUST have a “Type” field.")
-
-        if (self.next is True):
-            raise AttributeError("True is an invalid value for Next")
                 
         if self.end is True:
             if self.stype in ['Choice', 'Succeed', 'Fail']:
