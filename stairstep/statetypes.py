@@ -27,7 +27,8 @@ class StateChoice(StateBase):
         super().__init__(**kwargs)
 
         self.validations += [
-            validation_states_must_have_next_or_end
+            validation_states_must_have_next_or_end,
+            validation_end_cannot_be_true
         ]
         
 
@@ -37,7 +38,9 @@ class StateSucceed(StateBase):
         kwargs['stype'] = "Succeed"
         super().__init__(**kwargs)
 
-        self.validations += []
+        self.validations += [
+            validation_end_cannot_be_true
+        ]
         
 
 class StateFail(StateBase):
@@ -45,4 +48,6 @@ class StateFail(StateBase):
         kwargs['stype'] = "Fail"
         super().__init__(**kwargs)
 
-        self.validations += []
+        self.validations += [
+            validation_end_cannot_be_true
+        ]

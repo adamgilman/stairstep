@@ -1,6 +1,6 @@
 import unittest
 from unittest import TestCase
-from stairstep import StatePass, StateTask, StateChoice
+from stairstep import StatePass, StateTask, StateChoice, StateSucceed, StateFail
 from stairstep.base import StateBase
 
 from stairstep.validations import *
@@ -38,6 +38,11 @@ class FieldValidationsTests(unittest.TestCase):
         self.state.stype = None
         with self.assertRaises(AttributeError):
             validation_all_states_must_have_type(self.state)
+    
+    def test_end_cannot_be_true(self):
+        self.state.end = True
+        with self.assertRaises(AttributeError):
+            validation_end_cannot_be_true(self.state)
 
 class StateTestCases:
     class CommonTests(unittest.TestCase):
@@ -58,5 +63,33 @@ class TestPassStateValidations(StateTestCases.CommonTests):
         required = [
             validation_none_terminal_must_have_next,
             validation_states_must_have_next_or_end    
+        ]
+        self.assertCountEqual(required, self.state.validations)
+
+class TestChoiceStateValidations(StateTestCases.CommonTests):
+    def setUp(self):
+        self.state = StateChoice()
+    def test_required_validations(self):
+        required = [
+            validation_states_must_have_next_or_end,
+            validation_end_cannot_be_true
+        ]
+        self.assertCountEqual(required, self.state.validations)
+
+class TestSucceedStateValidations(StateTestCases.CommonTests):
+    def setUp(self):
+        self.state = StateSucceed()
+    def test_required_validations(self):
+        required = [
+            validation_end_cannot_be_true
+        ]
+        self.assertCountEqual(required, self.state.validations)
+
+class TestFailStateValidations(StateTestCases.CommonTests):
+    def setUp(self):
+        self.state = StateFail()
+    def test_required_validations(self):
+        required = [
+            validation_end_cannot_be_true
         ]
         self.assertCountEqual(required, self.state.validations)

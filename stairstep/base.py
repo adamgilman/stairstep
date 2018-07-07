@@ -42,11 +42,7 @@ class StateBase(object):
         
     def export(self):
         self.validate()
-                
-        if self.end is True:
-            if self.stype in ['Choice', 'Succeed', 'Fail']:
-                raise AttributeError("Choice, Succeed, Fail states may NOT have 'End' field")
-
+      
         ret = {}
         self_vars = vars(self)
         exclude_fields = [

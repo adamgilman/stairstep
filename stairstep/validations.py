@@ -17,3 +17,7 @@ def validation_name_cannot_be_longer_than_128(self):
 def validation_all_states_must_have_type(self):
     if self.stype is None:
         raise AttributeError("State must have Type")
+
+def validation_end_cannot_be_true(self):
+    if self.end is True:
+        raise AttributeError("End cannot be True for this State Type")
