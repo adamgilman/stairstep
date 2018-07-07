@@ -50,6 +50,7 @@ class StateTestCases:
             all_validations = [
                 validation_states_cant_have_both_end_and_next,
                 validation_name_cannot_be_longer_than_128,
+                validation_all_states_must_have_type
             ]
             
             for v in all_validations:
