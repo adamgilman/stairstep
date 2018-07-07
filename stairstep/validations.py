@@ -13,3 +13,7 @@ def validation_states_cant_have_both_end_and_next(self):
 def validation_name_cannot_be_longer_than_128(self):
     if len(self.name) > 128:
         raise AttributeError("State name cannot be longer than 128 charecters")
+
+def validation_all_states_must_have_type(self):
+    if self.stype is None:
+        raise AttributeError("State must have Type")

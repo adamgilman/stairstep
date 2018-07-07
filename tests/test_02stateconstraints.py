@@ -2,19 +2,6 @@ import unittest, json
 from stairstep import StateTask, StateChoice, StateSucceed, StateFail
 
 class TestStateBaseConstraints(unittest.TestCase):
-    '''
-    #Not needed after refactor
-    def test_must_have_type(self):
-        #All states MUST have a “Type” field.
-        bad_state = State(
-            name = "InvalidState",
-            resource="arn:fake",
-            end=False
-        )
-        
-        with self.assertRaises(AttributeError):
-            bad_state.export()
-    '''
     def test_may_have_comment(self):
         '''Any state MAY have a “Comment” field'''
         output = {
@@ -77,27 +64,3 @@ class TestStateBaseConstraints(unittest.TestCase):
         with self.assertRaises(AttributeError):
             fail_cannot_end.export()
         
-@unittest.skip("Need to fix after refactor")
-class TestStateNonTerminalStates(unittest.TestCase):
-    '''
-    All non-terminal states MUST have a “Next” field, 
-    except for the Choice state. The value of the “Next” 
-    field MUST exactly and case-sensitively match the 
-    name of the another state.
-    '''
-    def test_non_terminal_must_have_next(self):
-        states = ["Pass","Task","Choice","Wait","Succeed","Fail","Parallel"]
-        for s in states:
-            task = State(
-                name = "Hello World",
-                stype = s,
-                resource = "arn:aws:lambda:us-east-1:123456789012:function:HelloWorld",
-                end = True
-            )
-            if s not in ['Succeed', 'Fail']:
-                with self.assertRaises(AttributeError):
-                    task.export()
-    
-
-class TestStateTerminalStates(unittest.TestCase):
-    pass

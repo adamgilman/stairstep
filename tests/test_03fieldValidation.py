@@ -34,6 +34,10 @@ class FieldValidationsTests(unittest.TestCase):
         with self.assertRaises(AttributeError):
             validation_name_cannot_be_longer_than_128(self.state)
 
+    def test_states_must_have_type(self):
+        self.state.stype = None
+        with self.assertRaises(AttributeError):
+            validation_all_states_must_have_type(self.state)
 
 class StateTestCases:
     class CommonTests(unittest.TestCase):
