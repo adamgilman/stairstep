@@ -41,6 +41,17 @@ class FieldValidationsTests(unittest.TestCase):
         with self.assertRaises(AttributeError):
             validation_end_cannot_be_true(self.state)
 
+    def test_not_allowed_to_have_path_fields(self):
+        self.state.inputpath = "$.ipath"
+        with self.assertRaises(AttributeError):
+            validation_cannot_have_io_path_fields(self.state)
+
+        self.state.inputpath = None
+
+        self.state.outputpath = "$.opath"
+        with self.assertRaises(AttributeError):
+            validation_cannot_have_io_path_fields(self.state)
+
 class StateTestCases:
     class CommonTests(unittest.TestCase):
         def test_all_state_validations(self):
@@ -88,6 +99,7 @@ class TestFailStateValidations(StateTestCases.CommonTests):
         self.state = StateFail()
     def test_required_validations(self):
         required = [
-            validation_end_cannot_be_true
+            validation_end_cannot_be_true,
+            validation_cannot_have_io_path_fields
         ]
         self.assertCountEqual(required, self.state.validations)
