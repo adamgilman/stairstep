@@ -1,1 +1,2 @@
-from .base import StairStep, StateTask, StateSucceed, StateChoice, StateFail, StatePass
+from .base import StairStep 
+from .statetypes import StateTask, StateSucceed, StateChoice, StateFail, StatePass
