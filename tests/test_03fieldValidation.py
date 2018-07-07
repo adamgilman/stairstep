@@ -5,9 +5,6 @@ from stairstep.base import StateBase
 
 from stairstep.validations import *
 
-#TODO: Create individual validations, and test isolated
-#TODO: Test that tasks have required validations
-
 class FieldValidationsTests(unittest.TestCase):
     def setUp(self):
         self.state = StateBase()
