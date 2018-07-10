@@ -1,5 +1,5 @@
 def validation_none_terminal_must_have_next(self):
-    if self.next is None:
+    if (self.next is None) and (self.end is not True):
         raise AttributeError("All non-terminal states MUST have a “Next” field")
 
 def validation_states_must_have_next_or_end(self):

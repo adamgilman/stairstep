@@ -14,6 +14,9 @@ class FieldValidationsTests(unittest.TestCase):
         with self.assertRaises(AttributeError):
             validation_none_terminal_must_have_next(self.state)
 
+        self.state.end = True
+        validation_none_terminal_must_have_next(self.state)
+
     def test_states_must_have_next_or_end(self):
         self.state.next = None
         self.state.end = None
