@@ -19,7 +19,6 @@ class StateTask(StateBase):
         self.validations += [
             validation_states_must_have_next_or_end
         ]
-        
 
 class StateChoice(StateBase):
     def __init__(self, **kwargs):
@@ -31,8 +30,6 @@ class StateChoice(StateBase):
             validation_end_cannot_be_true
         ]
         
-
-
 class StateSucceed(StateBase):
     def __init__(self, **kwargs):
         kwargs['stype'] = "Succeed"
