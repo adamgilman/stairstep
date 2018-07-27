@@ -1,46 +1,15 @@
 import simplejson as json
 from .validations import *
 
-class StateBase(object):
-    prop_map = {
-            'name'      : "Name",
-            "comment"   : "Comment",
-            "stype"     : "Type",
-            "resource"  : "Resource",
-            "next"      : "Next",
-            "inputpath" : "InputPath",
-            "outputpath": "OutputPath",
-            "retry"     : "Retry",
-            "catch"     : "Catch",
-            "end"       : "End"
-        }
-    def __init__(self,
-        name = None,
-        comment = None,
-        stype = None,
-        resource = None,
-        snext = None,
-        end = None
-    ):
-        self.name = name
-        self.comment = comment
-        self.stype = stype
-        self.resource = resource
-        self.next = snext
-        self.end = end
-
-        self.base_validations = [
-            validation_states_cant_have_both_end_and_next,
-            validation_name_cannot_be_longer_than_128,
-            validation_all_states_must_have_type
-        ]
-        self.validations = []
+class SSBase(object):
+    prop_map = {}
+    base_validations = []
 
     def validate(self):
         all_validations = self.base_validations + self.validations
         for v in all_validations:
             v(self)
-        
+    
     def export(self):
         self.validate()
       
@@ -60,6 +29,43 @@ class StateBase(object):
                 key_map = self.prop_map[prop_key]
                 ret[key_map] = self_vars[prop_key]
         return ret
+
+class StateBase(SSBase):
+    prop_map = {
+            'name'      : "Name",
+            "comment"   : "Comment",
+            "stype"     : "Type",
+            "resource"  : "Resource",
+            "next"      : "Next",
+            "inputpath" : "InputPath",
+            "outputpath": "OutputPath",
+            "retry"     : "Retry",
+            "catch"     : "Catch",
+            "end"       : "End"
+        }
+    base_validations = [
+            validation_states_cant_have_both_end_and_next,
+            validation_name_cannot_be_longer_than_128,
+            validation_all_states_must_have_type
+        ]
+
+    def __init__(self,
+        name = None,
+        comment = None,
+        stype = None,
+        resource = None,
+        snext = None,
+        end = None
+    ):
+        self.name = name
+        self.comment = comment
+        self.stype = stype
+        self.resource = resource
+        self.next = snext
+        self.end = end
+
+        self.validations = []
+    
 
 class StairStep(object):
     def __init__(self, 
