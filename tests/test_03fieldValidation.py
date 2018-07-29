@@ -22,7 +22,7 @@ class FieldValidationsTests(unittest.TestCase):
         self.state.end = None
         with self.assertRaises(AttributeError):
             validation_states_must_have_next_or_end(self.state)
-    
+   
     def test_states_cant_have_both_end_and_next(self):
         self.state.next = "NextResource"
         self.state.end = True
@@ -83,7 +83,6 @@ class TestChoiceStateValidations(StateTestCases.CommonTests):
         self.state = StateChoice()
     def test_required_validations(self):
         required = [
-            validation_states_must_have_next_or_end,
             validation_end_cannot_be_true
         ]
         self.assertCountEqual(required, self.state.validations)

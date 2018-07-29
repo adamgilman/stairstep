@@ -71,41 +71,6 @@ class TestStateOutputTask(unittest.TestCase):
         result = json.loads( self.ss.json() )
         self.assertDictEqual(output, result)
 
-#TODO Choices
-@unittest.skip("disabled to build out choices")
-class TestStateOutputChoice(unittest.TestCase):
-    def setUp(self):
-        self.ss = StairStep(
-            comment = "A simple minimal example of the States language",
-            startAt = "HelloWorld",
-        )
-        self.state = StateChoice(
-            name            = "HelloWorld",
-            comment         = "Choice State example",
-            snext           = "NextState"
-        )
-        self.ss.addState(self.state)
-    
-    def test_output(self):
-        self.maxDiff = None
-        output = '''
-            {
-                "Comment": "A simple minimal example of the States language",
-                "StartAt": "HelloWorld",
-                "States": {
-                    "HelloWorld": { 
-                        "Type": "Choice",
-                        "Comment": "Choice State example",
-                        "Next": "NextState"
-                    }
-                }
-            }
-        '''
-        
-        output = json.loads(output)
-        result = json.loads( self.ss.json() )
-        self.assertDictEqual(output, result)
-
 class TestStateOutputSucceed(unittest.TestCase):
     def setUp(self):
         self.ss = StairStep(
