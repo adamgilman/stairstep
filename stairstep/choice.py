@@ -1,2 +1,0 @@
-class ChoiceRule(object):
-    pass
