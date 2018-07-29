@@ -17,13 +17,13 @@ class TestChoiceStateRule(unittest.TestCase):
                          )
 
         valueInTwenties = ChoiceRule(operator="And", snext="ValueInTwenties", conditions=[
-                            ChoiceExpression(operator="NumericGreaterThanEquals", variable="$.value", value="20"),
-                            ChoiceExpression(operator="NumericLessThan", variable="$.value", value="30")]
+                            ChoiceExpression(operator="NumericGreaterThanEquals", variable="$.value", value=20),
+                            ChoiceExpression(operator="NumericLessThan", variable="$.value", value=30)]
                         )
     
         self.state = StateChoice(
             name    = "ChoiceStateX",
-            choices = StateChoice(choices=[typeNotPrivate, valueInTwenties]),
+            choices = [typeNotPrivate, valueInTwenties],
             default = "DefaultState"
         )
         self.ss.addState(self.state)
@@ -66,7 +66,6 @@ class TestChoiceStateRule(unittest.TestCase):
         '''     
         output = json.loads(output)
         result = json.loads( self.ss.json() )
-        print(self.ss.json())
         self.assertDictEqual(output, result)
 
 class TestChoiceExpressionSubset(unittest.TestCase):

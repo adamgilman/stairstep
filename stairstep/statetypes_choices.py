@@ -16,16 +16,10 @@ class StateChoice(StateBase):
     
     def export(self):
         #generate choices export
-        if type(self.choices) is not list:
-            ret_choices = self.choices.export()
-        else:
-            ret_choices = []
-            for c in self.choices:
-                ret_choices.append( c.export() )
         return {
             'Type' : "Choice",
             'Default' : self.default,
-            'Choices' : ret_choices
+            'Choices' : [c.export() for c in self.choices]
         }
 
 class ChoiceRule:
