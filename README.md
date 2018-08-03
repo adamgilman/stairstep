@@ -4,7 +4,7 @@ StairStep is a Pythonic API for designing [AWS Step Functions](https://aws.amazo
 
 ![state_machine](documentation/statemachine_example.png)
 
-Instead of hand crafting JSON, StarStep allows you define step functions using Python code which allows you to easily import information from outside sources and dynamically create step functions on the fly. 
+Instead of hand crafting JSON, StairStep allows you define step functions using Python code which allows you to easily import information from outside sources and dynamically create step functions on the fly. 
 
 # Development Progress / Coverage
 | Lanuage Feature  |  Type | Progress  | 
@@ -40,7 +40,7 @@ Using the example from the [Amazon's State Language](https://states-language.net
 }
 ```
 
-We can easily craft that in StarStep as follows
+We can easily craft that in StairStep as follows
 
 ```
 # Create a parent StairStep object
