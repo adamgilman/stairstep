@@ -72,8 +72,10 @@ ss.json()
 ## <a name="choicestate"></a> Complex Choice State
 
 ```
-from stairstep import StateChoice, ChoiceRule, ChoiceExpression, StatePass
-
+ss = StairStep(
+    comment = "Example Choice State",
+    startAt = "ChoiceStateX"
+)
 # Create a ChoiceRule, which is composed of choice expression(s)
 # This checks to see if the variable $.type is not "Private"
 typeNotPrivate = ChoiceRule(operator="Not", snext="Public", conditions=
@@ -96,5 +98,48 @@ public = StatePass(name="Public", end=True)
 ss.addState(state)
 ss.addState(in_twenties)
 ss.addState(public)
+ss.addState(default)
 ss.json()
 ```
+
+```
+{
+	"Comment": "Example Choice State",
+	"StartAt": "ChoiceStateX",
+	"States": {
+		"ChoiceStateX": {
+			"Type": "Choice",
+			"Default": "DefaultState",
+			"Choices": [{
+				"Next": "Public",
+				"Not": {
+					"Variable": "$.type",
+					"StringEquals": "Private"
+				}
+			}, {
+				"Next": "ValueInTwenties",
+				"And": [{
+					"Variable": "$.value",
+					"NumericGreaterThanEquals": 20
+				}, {
+					"Variable": "$.value",
+					"NumericLessThan": 30
+				}]
+			}]
+		},
+		"ValueInTwenties": {
+			"Type": "Pass",
+			"End": true
+		},
+		"Public": {
+			"Type": "Pass",
+			"End": true
+		},
+		"DefaultState": {
+			"Type": "Pass",
+			"End": true
+		}
+	}
+}
+```
+![choice_state](documentation/choice_state.png)
