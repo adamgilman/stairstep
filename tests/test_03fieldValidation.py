@@ -60,7 +60,7 @@ class StateFieldValidationsTests(unittest.TestCase):
         self.state = StateWait(
             snext = "NextField"
         )
-    #A Wait state MUST contain exactly one of ”Seconds”, “SecondsPath”, “Timestamp”, or “TimestampPath”.
+    #A Wait state MUST contain exactly one of Seconds, SecondsPath, Timestamp, or TimestampPath.
 
     def test_wait_must_contain_time_field(self):
         #has no fields    
