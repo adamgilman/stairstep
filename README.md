@@ -15,7 +15,7 @@ Instead of hand crafting JSON, StairStep allows you define step functions using 
 | State  | Fail  | ✅  |
 | State  | Choice  | ✅  |
 | Field  | Common Validations  |  ✅  |
-| State  | Wait  | Next 🛣 |
+| State  | Wait  | ✅ |
 | State  | Parallel  | Next 🛣 |
 
 
