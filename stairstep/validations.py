@@ -28,3 +28,14 @@ def validation_cannot_have_io_path_fields(self):
     
     if self.output is not None:
         raise AttributeError("Fail State cannot have InputPath, OutputPath")
+
+def validation_must_contain_only_one_time_field(self):    
+    fields = [self.seconds, self.secondspath, self.timestamp, self.timestamppath]
+
+    fields_count = 0    
+    for f in fields:
+        if f is not None:
+            fields_count = fields_count + 1
+    
+    if fields_count != 1:
+        raise AttributeError("Wait state must contain exactly one of ”Seconds”, “SecondsPath”, “Timestamp”, or “TimestampPath”.")

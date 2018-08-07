@@ -1,6 +1,6 @@
 import unittest
 from unittest import TestCase
-from stairstep import StatePass, StateTask, StateChoice, StateSucceed, StateFail
+from stairstep import StatePass, StateTask, StateChoice, StateSucceed, StateFail, StateWait
 from stairstep.base import StateBase
 
 from stairstep.validations import *
@@ -55,7 +55,30 @@ class FieldValidationsTests(unittest.TestCase):
         with self.assertRaises(AttributeError):
             validation_cannot_have_io_path_fields(self.state)
 
-class StateTestCases:
+class StateFieldValidationsTests(unittest.TestCase):
+    def setUp(self):
+        self.state = StateWait(
+            snext = "NextField"
+        )
+    #A Wait state MUST contain exactly one of ”Seconds”, “SecondsPath”, “Timestamp”, or “TimestampPath”.
+
+    def test_wait_must_contain_time_field(self):
+        #has no fields    
+        with self.assertRaises(AttributeError):
+            validation_must_contain_only_one_time_field(self.state)
+        
+    def test_wait_must_contain_has_at_least_one(self):
+        self.state.secondspath = "$.seconds"    
+        validation_must_contain_only_one_time_field(self.state)
+
+    def test_wait_must_contain_only_one(self):
+        self.state.seconds = 11
+        self.state.secondspath = "$.seconds"    
+        with self.assertRaises(AttributeError):
+            validation_must_contain_only_one_time_field(self.state)
+
+
+class StateTestCases(unittest.TestCase):
     class CommonTests(unittest.TestCase):
         def test_all_state_validations(self):
             all_validations = [
@@ -67,6 +90,7 @@ class StateTestCases:
             for v in all_validations:
                 self.assertIn(v, self.state.base_validations)
 
+#TODO allowed_operators = ["StringEquals","StringLessThan","StringGreaterThan","StringLessThanEquals","StringGreaterThanEquals","NumericEquals","NumericLessThan","NumericGreaterThan","NumericLessThanEquals","NumericGreaterThanEquals","BooleanEquals","TimestampEquals","TimestampLessThan","TimestampGreaterThan","TimestampLessThanEquals","TimestampGreaterThanEquals","And","Or","Not"]
 
 class TestPassStateValidations(StateTestCases.CommonTests):
     def setUp(self):
@@ -103,5 +127,14 @@ class TestFailStateValidations(StateTestCases.CommonTests):
         required = [
             validation_end_cannot_be_true,
             validation_cannot_have_io_path_fields
+        ]
+        self.assertCountEqual(required, self.state.validations)
+
+class TestWaitStateValidations(StateTestCases.CommonTests):    
+    def setUp(self):
+        self.state = StateWait()
+    def test_required_validations(self):
+        required = [
+            validation_must_contain_only_one_time_field
         ]
         self.assertCountEqual(required, self.state.validations)

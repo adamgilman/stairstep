@@ -41,7 +41,11 @@ class StateBase(SSBase):
             "outputpath": "OutputPath",
             "retry"     : "Retry",
             "catch"     : "Catch",
-            "end"       : "End"
+            "end"       : "End",
+            "seconds"   : "Seconds",
+            "timestamp" : "Timestamp",
+            "secondspath" : "SecondsPath",
+            "timestamppath" : "TimestampPath"
         }
     base_validations = [
             validation_states_cant_have_both_end_and_next,
@@ -55,14 +59,27 @@ class StateBase(SSBase):
         stype = None,
         resource = None,
         snext = None,
+        seconds = None,
+        timestamp = None,
+        timestamppath = None,
+        secondspath = None,
         end = None
     ):
+        #TODO - Refactor to unpack via **kwargs and map against prop_map
         self.name = name
         self.comment = comment
         self.stype = stype
         self.resource = resource
         self.next = snext
+        self.seconds = seconds        
         self.end = end
+        self.timestamppath = timestamppath
+        self.secondspath = secondspath
+
+        if timestamp is not None:
+            self.timestamp = timestamp.isoformat() #compliant ISO-8601 export 
+        else:
+            self.timestamp = None
 
         self.validations = []
     
