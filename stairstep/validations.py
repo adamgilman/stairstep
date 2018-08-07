@@ -38,4 +38,4 @@ def validation_must_contain_only_one_time_field(self):
             fields_count = fields_count + 1
     
     if fields_count != 1:
-        raise AttributeError("Wait state must contain exactly one of ”Seconds”, “SecondsPath”, “Timestamp”, or “TimestampPath”.")
+        raise AttributeError("Wait state must contain exactly one of Seconds, SecondsPath, Timestamp, or TimestampPath")
