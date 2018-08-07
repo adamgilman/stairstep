@@ -19,6 +19,15 @@ class StateTask(StateBase):
         self.validations += [
             validation_states_must_have_next_or_end
         ]
+    
+class StateWait(StateBase):
+    def __init__(self, **kwargs):
+        kwargs['stype'] = "Wait"
+        super().__init__(**kwargs)
+
+        self.validations += [            
+            validation_must_contain_only_one_time_field,
+        ]
      
 class StateSucceed(StateBase):
     def __init__(self, **kwargs):
