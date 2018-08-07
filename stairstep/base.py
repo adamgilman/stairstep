@@ -1,4 +1,4 @@
-import simplejson as json
+import json
 from .validations import *
 
 class SSBase(object):
