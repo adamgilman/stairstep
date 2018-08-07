@@ -1,4 +1,4 @@
-import json
+import json, copy
 from .validations import *
 
 class SSBase(object):
@@ -14,7 +14,7 @@ class SSBase(object):
         self.validate()
       
         ret = {}
-        self_vars = vars(self)
+        self_vars = copy.deepcopy( vars(self) )
         exclude_fields = [
                             'prop_map',
                             'name',
