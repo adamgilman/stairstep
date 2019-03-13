@@ -45,7 +45,7 @@ We can easily craft that in StairStep as follows
 ss = StairStep(comment="A simple minimal example of the States language", startAt="Hello World")
 
 # Create the HelloWorld step
-StateTask(name="Hello World", resource="arn:aws:lambda:us-east-1:123456789012:function:HelloWorld", end=True)
+hello = StateTask(name="Hello World", resource="arn:aws:lambda:us-east-1:123456789012:function:HelloWorld", end=True)
 
 # Add the step into the StairStep object
 ss.addState(hello)
