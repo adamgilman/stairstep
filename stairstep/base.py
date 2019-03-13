@@ -32,20 +32,22 @@ class SSBase(object):
 
 class StateBase(SSBase):
     prop_map = {
-            'name'      : "Name",
-            "comment"   : "Comment",
-            "stype"     : "Type",
-            "resource"  : "Resource",
-            "next"      : "Next",
-            "inputpath" : "InputPath",
-            "outputpath": "OutputPath",
-            "retry"     : "Retry",
-            "catch"     : "Catch",
-            "end"       : "End",
-            "seconds"   : "Seconds",
-            "timestamp" : "Timestamp",
-            "secondspath" : "SecondsPath",
-            "timestamppath" : "TimestampPath"
+            'name'          : "Name",
+            "comment"       : "Comment",
+            "stype"         : "Type",
+            "resource"      : "Resource",
+            "next"          : "Next",
+            "inputpath"     : "InputPath",
+            "resultpath"    : "ResultPath",
+            "outputpath"    : "OutputPath",
+            "retry"         : "Retry",
+            "catch"         : "Catch",
+            "end"           : "End",
+            "seconds"       : "Seconds",
+            "timestamp"     : "Timestamp",
+            "secondspath"   : "SecondsPath",
+            "timestamppath" : "TimestampPath",
+            "parameters"    : "Parameters"
         }
     base_validations = [
             validation_states_cant_have_both_end_and_next,
@@ -63,7 +65,11 @@ class StateBase(SSBase):
         timestamp = None,
         timestamppath = None,
         secondspath = None,
-        end = None
+        end = None,
+        parameters = None,
+        inputpath = None,
+        outputpath = None, 
+        resultpath = None
     ):
         #TODO - Refactor to unpack via **kwargs and map against prop_map
         self.name = name
@@ -75,6 +81,10 @@ class StateBase(SSBase):
         self.end = end
         self.timestamppath = timestamppath
         self.secondspath = secondspath
+        self.parameters = parameters
+        self.inputpath = inputpath
+        self.outputpath = outputpath
+        self.resultpath = resultpath
 
         if timestamp is not None:
             self.timestamp = timestamp.isoformat() #compliant ISO-8601 export 
