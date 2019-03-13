@@ -32,21 +32,22 @@ class SSBase(object):
 
 class StateBase(SSBase):
     prop_map = {
-            'name'      : "Name",
-            "comment"   : "Comment",
-            "stype"     : "Type",
-            "resource"  : "Resource",
-            "next"      : "Next",
-            "inputpath" : "InputPath",
-            "outputpath": "OutputPath",
-            "retry"     : "Retry",
-            "catch"     : "Catch",
-            "end"       : "End",
-            "seconds"   : "Seconds",
-            "timestamp" : "Timestamp",
-            "secondspath" : "SecondsPath",
+            'name'          : "Name",
+            "comment"       : "Comment",
+            "stype"         : "Type",
+            "resource"      : "Resource",
+            "next"          : "Next",
+            "inputpath"     : "InputPath",
+            "resultpath"    : "ResultPath",
+            "outputpath"    : "OutputPath",
+            "retry"         : "Retry",
+            "catch"         : "Catch",
+            "end"           : "End",
+            "seconds"       : "Seconds",
+            "timestamp"     : "Timestamp",
+            "secondspath"   : "SecondsPath",
             "timestamppath" : "TimestampPath",
-            "parameters": "Parameters"
+            "parameters"    : "Parameters"
         }
     base_validations = [
             validation_states_cant_have_both_end_and_next,
@@ -65,7 +66,10 @@ class StateBase(SSBase):
         timestamppath = None,
         secondspath = None,
         end = None,
-        parameters = None
+        parameters = None,
+        inputpath = None,
+        outputpath = None, 
+        resultpath = None
     ):
         #TODO - Refactor to unpack via **kwargs and map against prop_map
         self.name = name
@@ -78,6 +82,9 @@ class StateBase(SSBase):
         self.timestamppath = timestamppath
         self.secondspath = secondspath
         self.parameters = parameters
+        self.inputpath = inputpath
+        self.outputpath = outputpath
+        self.resultpath = resultpath
 
         if timestamp is not None:
             self.timestamp = timestamp.isoformat() #compliant ISO-8601 export 
