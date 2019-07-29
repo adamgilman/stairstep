@@ -107,7 +107,25 @@ class StairStep(object):
     def addState(self, state):
         self.states[state.name] = state
 
+    def validate_state_flow(self):
+        state_names = [
+            state_name for state_name in self.states.keys()
+            if state_name != self.startAt
+        ]
+        state_targets = [
+            state.next for state in self.states.values()
+            if getattr(state, 'next', None) is not None
+        ]
+        for state_name in state_names:
+            if state_name not in state_targets:
+                raise ValueError('State unreachable: ' + state_name)
+        for target in state_targets:
+            if target not in state_names:
+                raise ValueError('Target state not found: ' + target)
+
     def export(self):
+        self.validate_state_flow()
+
         states = {}
         for k in self.states.keys():
             states[k] = self.states[k].export()
