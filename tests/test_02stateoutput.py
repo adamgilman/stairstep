@@ -13,7 +13,7 @@ class TestStateOutputPass(unittest.TestCase):
             end             = True
         )
         self.ss.addState(self.state)
-    
+
     def test_output(self):
         self.maxDiff = None
         #validated by statelint
@@ -22,7 +22,7 @@ class TestStateOutputPass(unittest.TestCase):
                 "Comment": "A simple minimal example of the States language",
                 "StartAt": "HelloWorld",
                 "States": {
-                    "HelloWorld": { 
+                    "HelloWorld": {
                         "Type": "Pass",
                         "Comment": "Pass State example",
                         "End": true
@@ -30,7 +30,7 @@ class TestStateOutputPass(unittest.TestCase):
                 }
             }
         '''
-        
+
         output = json.loads(output)
         result = json.loads( self.ss.json() )
         self.assertDictEqual(output, result)
@@ -48,7 +48,7 @@ class TestStateOutputTask(unittest.TestCase):
             end             = True
         )
         self.ss.addState(self.state)
-    
+
     def test_output(self):
         self.maxDiff = None
         #validated by statelint
@@ -57,7 +57,7 @@ class TestStateOutputTask(unittest.TestCase):
                 "Comment": "A simple minimal example of the States language",
                 "StartAt": "HelloWorld",
                 "States": {
-                    "HelloWorld": { 
+                    "HelloWorld": {
                         "Type": "Task",
                         "Comment": "Task State example",
                         "Resource": "arn:aws:swf:us-east-1:123456789012:task:HelloWorld",
@@ -66,7 +66,7 @@ class TestStateOutputTask(unittest.TestCase):
                 }
             }
         '''
-        
+
         output = json.loads(output)
         result = json.loads( self.ss.json() )
         self.assertDictEqual(output, result)
@@ -75,32 +75,33 @@ class TestStateOutputWait(unittest.TestCase):
     def setUp(self):
         self.ss = StairStep(
             comment = "A simple minimal example of the States language",
-            startAt = "HelloWorld",
-        )        
-    
+            startAt = "wait_until",
+        )
+
     def test_output_delay(self):
         self.state = StateWait(
             name            = "wait_ten_seconds",
             seconds         = 10,
-            snext           = "NextState"
+            end             = True
         )
+        self.ss.startAt = 'wait_ten_seconds'
         self.ss.addState(self.state)
 
         self.maxDiff = None
         output = '''
             {
                 "Comment": "A simple minimal example of the States language",
-                "StartAt": "HelloWorld",
+                "StartAt": "wait_ten_seconds",
                 "States": {
                     "wait_ten_seconds" : {
                         "Type" : "Wait",
                         "Seconds" : 10,
-                        "Next": "NextState"
+                        "End": true
                     }
                 }
             }
         '''
-        
+
         output = json.loads(output)
         result = json.loads( self.ss.json() )
         self.assertDictEqual(output, result)
@@ -112,7 +113,7 @@ class TestStateOutputWait(unittest.TestCase):
         self.state = StateWait(
             name            = "wait_until",
             timestamp       = wait_until,
-            snext           = "NextState"
+            end             = True
         )
         self.ss.addState(self.state)
 
@@ -121,17 +122,17 @@ class TestStateOutputWait(unittest.TestCase):
         output = '''
             {
                 "Comment": "A simple minimal example of the States language",
-                "StartAt": "HelloWorld",
+                "StartAt": "wait_until",
                 "States": {
                     "wait_until" : {
                         "Type": "Wait",
                         "Timestamp": "2016-03-14T01:59:00+00:00",
-                        "Next": "NextState"
+                        "End": true
                     }
                 }
             }
         '''
-        
+
         output = json.loads(output)
         result = json.loads( self.ss.json() )
         self.assertDictEqual(output, result)
@@ -142,7 +143,7 @@ class TestStateOutputWait(unittest.TestCase):
         self.state = StateWait(
             name            = "wait_until",
             timestamppath   = "$.expirydate",
-            snext           = "NextState"
+            end             = True
         )
         self.ss.addState(self.state)
 
@@ -151,28 +152,28 @@ class TestStateOutputWait(unittest.TestCase):
         output = '''
             {
                 "Comment": "A simple minimal example of the States language",
-                "StartAt": "HelloWorld",
+                "StartAt": "wait_until",
                 "States": {
                     "wait_until" : {
                         "Type": "Wait",
                         "TimestampPath": "$.expirydate",
-                        "Next": "NextState"
+                        "End": true
                     }
                 }
             }
         '''
-        
+
         output = json.loads(output)
         result = json.loads( self.ss.json() )
         self.assertDictEqual(output, result)
-    
+
     def test_output_reference_seconds(self):
         from datetime import datetime, timezone
 
         self.state = StateWait(
             name            = "wait_until",
             secondspath     = "$.seconds",
-            snext           = "NextState"
+            end             = True
         )
         self.ss.addState(self.state)
 
@@ -181,17 +182,17 @@ class TestStateOutputWait(unittest.TestCase):
         output = '''
             {
                 "Comment": "A simple minimal example of the States language",
-                "StartAt": "HelloWorld",
+                "StartAt": "wait_until",
                 "States": {
                     "wait_until" : {
                         "Type": "Wait",
                         "SecondsPath": "$.seconds",
-                        "Next": "NextState"
+                        "End": true
                     }
                 }
             }
         '''
-        
+
         output = json.loads(output)
         result = json.loads( self.ss.json() )
         self.assertDictEqual(output, result)
@@ -207,7 +208,7 @@ class TestStateOutputSucceed(unittest.TestCase):
             comment         = "Succeed State example",
         )
         self.ss.addState(self.state)
-    
+
     def test_output(self):
         self.maxDiff = None
         #validated by statelint
@@ -216,14 +217,14 @@ class TestStateOutputSucceed(unittest.TestCase):
                 "Comment": "A simple minimal example of the States language",
                 "StartAt": "HelloWorld",
                 "States": {
-                    "HelloWorld": { 
+                    "HelloWorld": {
                         "Type": "Succeed",
                         "Comment": "Succeed State example"
                     }
                 }
             }
         '''
-        
+
         output = json.loads(output)
         result = json.loads( self.ss.json() )
         self.assertDictEqual(output, result)
@@ -250,7 +251,7 @@ class TestStateMultiTaskOutput(unittest.TestCase):
         )
         self.ss.addState(self.second)
 
-    
+
     def test_output(self):
         self.maxDiff = None
         #validated by statelint
@@ -259,7 +260,7 @@ class TestStateMultiTaskOutput(unittest.TestCase):
                 "Comment": "A simple minimal example of the States language",
                 "StartAt": "HelloWorld",
                 "States": {
-                    "HelloWorld": { 
+                    "HelloWorld": {
                         "Type": "Task",
                         "Comment": "Task State example",
                         "Resource": "arn:aws:swf:us-east-1:123456789012:task:HelloWorld",
@@ -274,7 +275,7 @@ class TestStateMultiTaskOutput(unittest.TestCase):
                 }
             }
         '''
-        
+
         output = json.loads(output)
         result = json.loads( self.ss.json() )
         self.assertDictEqual(output, result)

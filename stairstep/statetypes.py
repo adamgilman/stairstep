@@ -35,7 +35,8 @@ class StateSucceed(StateBase):
         super().__init__(**kwargs)
 
         self.validations += [
-            validation_end_cannot_be_true
+            validation_end_cannot_be_true,
+            validation_cannot_have_next
         ]
 
 
@@ -46,6 +47,7 @@ class StateFail(StateBase):
 
         self.validations += [
             validation_end_cannot_be_true,
+            validation_cannot_have_next,
             validation_cannot_have_io_path_fields
         ]
 

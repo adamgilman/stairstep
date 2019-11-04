@@ -22,6 +22,10 @@ def validation_end_cannot_be_true(self):
     if self.end is True:
         raise AttributeError("End cannot be True for this State Type")
 
+def validation_cannot_have_next(self):
+    if self.next:
+        raise AttributeError("State cannot have Next for this State Type")
+
 def validation_cannot_have_io_path_fields(self):
     if self.inputpath is not None:
         raise AttributeError("Fail State cannot have InputPath, OutputPath")
