@@ -118,13 +118,22 @@ class StairStep(object):
         ]
         for state_name in state_names:
             if state_name not in state_targets:
-                raise ValueError('State unreachable: ' + state_name)
+                raise ValueError(
+                    'State unreachable: ' + state_name
+                    + "(you can ignore this warning if there is a StateChoice"
+                    + " pointing to this state)."
+                )
         for target in state_targets:
             if target not in state_names:
                 raise ValueError('Target state not found: ' + target)
 
     def export(self):
-        self.validate_state_flow()
+        # The error raised is changed to a warning. This is a
+        # workaround due to lack of implementation around StateChoice.
+        try:
+            self.validate_state_flow()
+        except Exception as e:
+            print(f"WARNING - validation error:" + str(e))
 
         states = {}
         for k in self.states.keys():
