@@ -8,7 +8,7 @@ except:
 
 setuptools.setup(
     name="stairstep",
-    version="0.1",
+    version="0.1.1-tra",
     author="Adam Gilman",
     author_email="oss+stairstep@adamgilman.com",
     description="A Pythonic API for Amazon's States Language for defining AWS Step Functions",
