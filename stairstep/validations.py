@@ -22,20 +22,30 @@ def validation_end_cannot_be_true(self):
     if self.end is True:
         raise AttributeError("End cannot be True for this State Type")
 
+def validation_cannot_have_next(self):
+    if self.next:
+        raise AttributeError("State cannot have Next for this State Type")
+
 def validation_cannot_have_io_path_fields(self):
     if self.inputpath is not None:
         raise AttributeError("Fail State cannot have InputPath, OutputPath")
-    
+
     if self.output is not None:
         raise AttributeError("Fail State cannot have InputPath, OutputPath")
 
-def validation_must_contain_only_one_time_field(self):    
+def validation_must_contain_only_one_time_field(self):
     fields = [self.seconds, self.secondspath, self.timestamp, self.timestamppath]
 
-    fields_count = 0    
+    fields_count = 0
     for f in fields:
         if f is not None:
             fields_count = fields_count + 1
-    
+
     if fields_count != 1:
         raise AttributeError("Wait state must contain exactly one of Seconds, SecondsPath, Timestamp, or TimestampPath")
+
+def validation_branch_must_be_state_machines(self):
+    for branch in self.branches:
+        exported_branch = branch.export()
+        if 'StartAt' not in exported_branch or 'States' not in exported_branch:
+            raise AttributeError("Branches in a Parallel task must be a StairStep object.")

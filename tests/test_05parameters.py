@@ -10,10 +10,10 @@ class TestStepFunctionWithParameters(unittest.TestCase):
                 "Comment": "A simple minimal example of the States language",
                 "StartAt": "Hello World",
                 "States": {
-                    "Hello World": { 
+                    "Hello World": {
                         "Type": "Task",
                         "Resource": "arn:aws:lambda:us-east-1:123456789012:function:HelloWorld",
-                        "Next": "nextResource",
+                        "End": true,
                         "InputPath": "$.lambda",
                         "OutputPath": "$.data",
                         "ResultPath": "$.data.lambdaresult"
@@ -30,7 +30,7 @@ class TestStepFunctionWithParameters(unittest.TestCase):
         hello_step = StateTask(
             name = "Hello World",
             resource = "arn:aws:lambda:us-east-1:123456789012:function:HelloWorld",
-            snext = "nextResource",
+            end = True,
             inputpath = "$.lambda",
             outputpath = "$.data",
             resultpath = "$.data.lambdaresult"

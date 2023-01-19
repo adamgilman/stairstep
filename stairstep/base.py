@@ -9,21 +9,22 @@ class SSBase(object):
         all_validations = self.base_validations + self.validations
         for v in all_validations:
             v(self)
-    
+
     def export(self):
         self.validate()
-      
+
         ret = {}
         self_vars = copy.deepcopy( vars(self) )
         exclude_fields = [
                             'prop_map',
                             'name',
                             'validations',
-                            'base_validations'
+                            'base_validations',
+                            'branches',
                          ]
         for key in exclude_fields:
             self_vars.pop(key, None)
-        
+
         for prop_key in self_vars.keys():
             if self_vars[prop_key] is not None:
                 key_map = self.prop_map[prop_key]
@@ -68,7 +69,7 @@ class StateBase(SSBase):
         end = None,
         parameters = None,
         inputpath = None,
-        outputpath = None, 
+        outputpath = None,
         resultpath = None
     ):
         #TODO - Refactor to unpack via **kwargs and map against prop_map
@@ -77,7 +78,7 @@ class StateBase(SSBase):
         self.stype = stype
         self.resource = resource
         self.next = snext
-        self.seconds = seconds        
+        self.seconds = seconds
         self.end = end
         self.timestamppath = timestamppath
         self.secondspath = secondspath
@@ -87,15 +88,15 @@ class StateBase(SSBase):
         self.resultpath = resultpath
 
         if timestamp is not None:
-            self.timestamp = timestamp.isoformat() #compliant ISO-8601 export 
+            self.timestamp = timestamp.isoformat() #compliant ISO-8601 export
         else:
             self.timestamp = None
 
         self.validations = []
-    
+
 
 class StairStep(object):
-    def __init__(self, 
+    def __init__(self,
         comment = None,
         startAt = None
     ):
@@ -106,7 +107,34 @@ class StairStep(object):
     def addState(self, state):
         self.states[state.name] = state
 
+    def validate_state_flow(self):
+        state_names = [
+            state_name for state_name in self.states.keys()
+            if state_name != self.startAt
+        ]
+        state_targets = [
+            state.next for state in self.states.values()
+            if getattr(state, 'next', None) is not None
+        ]
+        for state_name in state_names:
+            if state_name not in state_targets:
+                raise ValueError(
+                    'State unreachable: ' + state_name
+                    + "(you can ignore this warning if there is a StateChoice"
+                    + " pointing to this state)."
+                )
+        for target in state_targets:
+            if target not in state_names:
+                raise ValueError('Target state not found: ' + target)
+
     def export(self):
+        # The error raised is changed to a warning. This is a
+        # workaround due to lack of implementation around StateChoice.
+        try:
+            self.validate_state_flow()
+        except Exception as e:
+            print(f"WARNING - validation error:" + str(e))
+
         states = {}
         for k in self.states.keys():
             states[k] = self.states[k].export()
